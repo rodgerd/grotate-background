@@ -1,0 +1,19 @@
+A simple hack to generate a transitioning background for a Gnome
+desktop and automagically update your user preferences with the
+result.  You stick the pics you want in a folder, point this at it,
+and away you go.
+                                                                                                       
+You could use icron if you want it to auto-update.
+
+Copyright (c) 2009-2012 Rodger Donaldson.  Consider this under the
+2-clause BSD license.
+
+Format is derived from this article:
+ http://www.linuxjournal.com/content/create-custom-transitioning-background-your-gnome-228-desktop
+
+The "XML" that ships with common GNOME distros for this aren't actual
+XML because apparently in GNOME-land you bloat everything out with
+psuedo-XML that doesn't actually parse as XML because...
+                                                                                                       
+This is the kind of thought-process that leads to GNOME 3 and GNOME
+Shell.
