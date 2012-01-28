@@ -12,12 +12,11 @@
 
 import dircache
 from optparse import OptionParser
+from os import listdir
 from os.path import expanduser
 import gconf
 
-#
 # TODO: Check you're running under a valid GNOME environment and bail gracefully otherwise.
-#
 
 # Set the home directory, were we expend to find the ~/.gnome2 directory, and the defaults
 # for finding a pictures directory.
@@ -31,14 +30,10 @@ parser.add_option("-d", "--directory", dest="directory", default=user_dir + '/Pi
 
 (options, args) =  parser.parse_args()
 
-#
 # TODO: Graceful error/exit if the directory doesn't exist or somesuch
-#
-files = dircache.listdir(options.directory)
+files = listdir(options.directory)
 
-#
 # TODO: Bail gracefully on errors.
-#
 xml = open(user_dir + '/.gnome2/gbackground.xml', 'w')
 
 # Boilerplate header.  We just need a date at some arbitary point in the past.
@@ -56,6 +51,6 @@ else:
     
 xml.write('</background>\n')
 
-# TODO: Check for XML success
+# TODO: Check for XML success. We don't want broken XML being set and blanking the background.
 client = gconf.client_get_default()
 client.set_string('/desktop/gnome/background/picture_filename', user_dir + '/.gnome2/gbackground.xml')
