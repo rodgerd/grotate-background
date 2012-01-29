@@ -1,25 +1,37 @@
 #!/usr/bin/python
 
 #
-# A simple hack to generate a transitioning background for a Gnome desktop and automagically update
-# your user preferences with the result.  You stick the pics you want in a folder, point this at
-# it, and away you go.
+# A simple hack to generate a transitioning background for a Gnome
+# desktop and automagically update your user preferences with the
+# result.  You stick the pics you want in a folder, point this at it,
+# and away you go.
 #
 # You could use icron if you want it to auto-update.
 #
-# Copyright (c) 2009-2012 Rodger Donaldson.  Consider this under the 2-clause BSD license.
+# Copyright (c) 2009-2012 Rodger Donaldson.  Consider this under the
+# 2-clause BSD license.
 #
 
 import dircache
+import gconf
 from optparse import OptionParser
 from os import listdir
 from os.path import expanduser
-import gconf
+from sys import exit
 
-# TODO: Check you're running under a valid GNOME environment and bail gracefully otherwise.
+# Returns whether a file looks like an image 
+# Only uses the extension - CBA to use the magic extensions.
+def isImage(name): 
+    if name.lower().endswith(('gif', 'jpg', 'jpeg', 'png')):
+        return True
+    else:
+        return False
 
-# Set the home directory, were we expend to find the ~/.gnome2 directory, and the defaults
-# for finding a pictures directory.
+# TODO: Check you're running under a valid GNOME environment and bail
+# gracefully otherwise.
+
+# Set the home directory, were we expend to find the ~/.gnome2
+# directory, and the defaults for finding a pictures directory.
 user_dir =  expanduser('~')
 
 #
@@ -31,7 +43,17 @@ parser.add_option("-d", "--directory", dest="directory", default=user_dir + '/Pi
 (options, args) =  parser.parse_args()
 
 # TODO: Graceful error/exit if the directory doesn't exist or somesuch
-files = listdir(options.directory)
+files = []
+try:
+    # files = listdir(options.directory)
+    for file in listdir(options.directory):
+        if isImage(file):
+            files.append(file)
+        else:
+            continue
+except OSError:
+    print "Directory does not exist or is not accessible."
+    exit(1)
 
 # TODO: Bail gracefully on errors.
 xml = open(user_dir + '/.gnome2/gbackground.xml', 'w')
